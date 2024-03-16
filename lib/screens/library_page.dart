@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LibraryPage extends StatefulWidget {
@@ -16,42 +17,24 @@ class _LibraryPageState extends State<LibraryPage> {
       appBar: AppBar(
         title: const Text('Library'),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 50,
-            child: Row(
-              children: [
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedOption = 'Reading'; // Update selected option
-                      });
-                    },
-                    child: Container(
-                      color: selectedOption == 'Reading' ? Colors.blue : Colors.grey[300], // Indicator color
-                      child: Center(child: Text('Reading')),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedOption = 'Read'; // Update selected option
-                      });
-                    },
-                    child: Container(
-                      color: selectedOption == 'Read' ? Colors.blue : Colors.grey[300], // Indicator color
-                      child: Center(child: Text('Read')),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+      body: CupertinoSegmentedControl<String>(
+        children: {
+          'Reading': Container(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+            child: Text('Reading'),
           ),
-        ],
+          'Read': Container(
+            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+            child: Text('Read'),
+          ),
+        },
+        groupValue: selectedOption,
+        onValueChanged: (value) {
+          setState(() {
+            selectedOption = value;
+            // Add logic here to filter books based on the selectedOption
+          });
+        },
       ),
     );
   }

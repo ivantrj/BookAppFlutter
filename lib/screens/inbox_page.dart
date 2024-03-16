@@ -62,8 +62,17 @@ class _InboxPageState extends State<InboxPage> {
     db.updateDatabase();
   }
 
+  void changeBookStatus(Book book, BookStatus newStatus) {
+    setState(() {
+      book.status = newStatus;
+      book.save(); // Save the updated book
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<Book> filteredBooks = db.books.where((book) => book.status == BookStatus.wantToRead).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Inbox"),
@@ -77,8 +86,9 @@ class _InboxPageState extends State<InboxPage> {
         itemCount: db.books.length,
         itemBuilder: (context, index) {
           return BookTile(
-            book: db.books[index],
+            book: filteredBooks[index],
             deleteFunction: (context) => deleteBook(index),
+            changeBookStatus: (newStatus) => changeBookStatus(filteredBooks[index], newStatus),
           );
         },
       ),

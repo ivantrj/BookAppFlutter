@@ -5,35 +5,61 @@ import 'package:flutter_tabs_starter/data/book.dart';
 class BookTile extends StatelessWidget {
   final Book book;
   Function(BuildContext)? deleteFunction;
+  Function(BookStatus)? changeBookStatus;
 
-  BookTile({super.key, required this.deleteFunction, required this.book});
+  BookTile({super.key, required this.deleteFunction, required this.book, this.changeBookStatus});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(25.0),
-      child: Slidable(
-        endActionPane: ActionPane(
-          motion: const StretchMotion(),
-          children: [
-            SlidableAction(
-              onPressed: deleteFunction,
-              icon: Icons.delete,
-              backgroundColor: Colors.red,
-              borderRadius: BorderRadius.circular(12),
-              padding: const EdgeInsets.all(6),
-            ),
-          ],
-        ),
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Change Status'),
+              content: DropdownButton<BookStatus>(
+                value: book.status,
+                onChanged: (newStatus) {
+                  Navigator.of(context).pop();
+                  changeBookStatus!(newStatus!);
+                },
+                items: BookStatus.values.map((status) {
+                  return DropdownMenuItem<BookStatus>(
+                    value: status,
+                    child: Text(status.toString()),
+                  );
+                }).toList(),
+              ),
+            );
+          },
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: Slidable(
+          endActionPane: ActionPane(
+            motion: const StretchMotion(),
             children: [
-              Text(book.name),
+              SlidableAction(
+                onPressed: deleteFunction,
+                icon: Icons.delete,
+                backgroundColor: Colors.red,
+                borderRadius: BorderRadius.circular(12),
+                padding: const EdgeInsets.all(6),
+              ),
             ],
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Text(book.name),
+              ],
+            ),
           ),
         ),
       ),
