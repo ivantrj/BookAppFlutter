@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_tabs_starter/data/book.dart';
 
 class BookTile extends StatelessWidget {
-  final String bookName;
+  final Book book;
   Function(BuildContext)? deleteFunction;
 
-  BookTile({super.key, required this.bookName, required this.deleteFunction});
+  BookTile({super.key, required this.deleteFunction, required this.book});
 
   @override
   Widget build(BuildContext context) {
@@ -20,19 +21,19 @@ class BookTile extends StatelessWidget {
               icon: Icons.delete,
               backgroundColor: Colors.red,
               borderRadius: BorderRadius.circular(12),
-              padding: EdgeInsets.all(6),
+              padding: const EdgeInsets.all(6),
             ),
           ],
         ),
         child: Container(
-          padding: EdgeInsets.all(12),
-          child: Row(
-            children: [
-              Text(bookName),
-            ],
-          ),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            children: [
+              Text(book.name),
+            ],
           ),
         ),
       ),

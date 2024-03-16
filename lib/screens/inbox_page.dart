@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tabs_starter/data/book.dart';
 import 'package:flutter_tabs_starter/data/database.dart';
 import 'package:flutter_tabs_starter/screens/widgets/book_tile.dart';
 import 'package:flutter_tabs_starter/screens/widgets/dialog_box.dart';
@@ -33,7 +34,7 @@ class _InboxPageState extends State<InboxPage> {
 
   void saveNewBook() {
     setState(() {
-      db.books.add(_controller.text);
+      db.books.add(Book(name: _controller.text, author: "Unknown", status: BookStatus.wantToRead));
       _controller.clear();
     });
     Navigator.of(context).pop();
@@ -76,7 +77,7 @@ class _InboxPageState extends State<InboxPage> {
         itemCount: db.books.length,
         itemBuilder: (context, index) {
           return BookTile(
-            bookName: db.books[index],
+            book: db.books[index],
             deleteFunction: (context) => deleteBook(index),
           );
         },

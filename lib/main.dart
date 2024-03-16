@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tabs_starter/data/book.dart';
 import 'package:flutter_tabs_starter/navigation/router.dart';
 import 'package:flutter_tabs_starter/style/style.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -6,7 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 void main() async {
   // init hive
   await Hive.initFlutter();
-
+  Hive.registerAdapter(BookAdapter()); // Register the adapter
   var box = await Hive.openBox('books');
 
   runApp(const MainApp());
