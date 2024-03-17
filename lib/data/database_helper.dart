@@ -1,4 +1,3 @@
-import 'package:flutter_tabs_starter/data/book.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 

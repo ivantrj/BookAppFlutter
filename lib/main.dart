@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabs_starter/navigation/router.dart';
 import 'package:flutter_tabs_starter/style/style.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   // init hive
