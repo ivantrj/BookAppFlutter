@@ -7,7 +7,7 @@ class BookTile extends StatelessWidget {
   Function(BuildContext)? deleteFunction;
   Function(BookStatus)? changeBookStatus;
 
-  BookTile({super.key, required this.deleteFunction, required this.book, this.changeBookStatus});
+  BookTile({super.key, this.deleteFunction, required this.book, this.changeBookStatus});
 
   @override
   Widget build(BuildContext context) {
@@ -50,15 +50,16 @@ class BookTile extends StatelessWidget {
               ),
             ],
           ),
-          child: Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Row(
-              children: [
-                Text(book.name),
-              ],
+          child: Card(
+            elevation: 3,
+            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Row(
+                children: [
+                  Text(book.name),
+                ],
+              ),
             ),
           ),
         ),

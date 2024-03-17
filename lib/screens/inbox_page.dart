@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabs_starter/data/book.dart';
-import 'package:flutter_tabs_starter/data/database.dart';
+import 'package:flutter_tabs_starter/data/book_database.dart';
 import 'package:flutter_tabs_starter/screens/widgets/book_tile.dart';
 import 'package:flutter_tabs_starter/screens/widgets/dialog_box.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 class InboxPage extends StatefulWidget {
   const InboxPage({super.key});
@@ -13,32 +12,27 @@ class InboxPage extends StatefulWidget {
 }
 
 class _InboxPageState extends State<InboxPage> {
-  final _myBox = Hive.box('books');
-  BookDatabase db = BookDatabase();
+  final BookDatabase db = BookDatabase();
+  List<Book> books = [];
 
   @override
   void initState() {
-    // if first time ever opening the app
-    if (_myBox.get("BOOKS") == null) {
-      db.createInitialData();
-    } else {
-      // load data from database
-      db.loadData();
-    }
-
     super.initState();
+    _loadData();
   }
 
-  // text controller
+  Future<void> _loadData() async {
+    books = await db.loadBooks();
+    setState(() {});
+  }
+
   final _controller = TextEditingController();
 
-  void saveNewBook() {
-    setState(() {
-      db.books.add(Book(name: _controller.text, author: "Unknown", status: BookStatus.wantToRead));
-      _controller.clear();
-    });
+  void saveNewBook() async {
+    await db.createBook(Book(name: _controller.text, status: BookStatus.wantToRead));
+    _controller.clear();
     Navigator.of(context).pop();
-    db.updateDatabase();
+    _loadData();
   }
 
   void addNewBook() {
@@ -52,26 +46,23 @@ class _InboxPageState extends State<InboxPage> {
         );
       }),
     );
-    db.updateDatabase();
   }
 
-  void deleteBook(int index) {
-    setState(() {
-      db.books.removeAt(index);
-    });
-    db.updateDatabase();
+  void deleteBook(int index) async {
+    await db.deleteBook(books[index].id);
+    _loadData(); // Reload data
   }
 
-  void changeBookStatus(Book book, BookStatus newStatus) {
+  void changeBookStatus(Book book, BookStatus newStatus) async {
+    await db.updateBookStatus(book.id, newStatus);
     setState(() {
-      book.status = newStatus;
-      book.save(); // Save the updated book
+      book.status = newStatus; // Update the book status locally
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Book> filteredBooks = db.books.where((book) => book.status == BookStatus.wantToRead).toList();
+    List<Book> filteredBooks = books.where((book) => book.status == BookStatus.wantToRead).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -83,11 +74,11 @@ class _InboxPageState extends State<InboxPage> {
         child: const Icon(Icons.add),
       ),
       body: ListView.builder(
-        itemCount: db.books.length,
+        itemCount: filteredBooks.length,
         itemBuilder: (context, index) {
           return BookTile(
             book: filteredBooks[index],
-            deleteFunction: (context) => deleteBook(index),
+            deleteFunction: (BuildContext) => deleteBook(index),
             changeBookStatus: (newStatus) => changeBookStatus(filteredBooks[index], newStatus),
           );
         },

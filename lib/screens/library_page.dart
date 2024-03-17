@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tabs_starter/data/book.dart';
+import 'package:flutter_tabs_starter/data/book_database.dart';
+import 'package:flutter_tabs_starter/screens/widgets/book_tile.dart';
 
 class LibraryPage extends StatefulWidget {
   const LibraryPage({super.key});
@@ -9,32 +12,71 @@ class LibraryPage extends StatefulWidget {
 }
 
 class _LibraryPageState extends State<LibraryPage> {
-  String selectedOption = "Reading";
-  // Add a variable to track the selected option
+  final BookDatabase db = BookDatabase(); // Adjusted for sqflite
+
+  BookStatus selectedOption = BookStatus.reading;
+  List<Book> books = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    if (selectedOption == BookStatus.reading) {
+      books = await db.loadBooksByStatus(BookStatus.reading.toString());
+    } else if (selectedOption == BookStatus.read) {
+      books = await db.loadBooksByStatus(BookStatus.read.toString());
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Library'),
-      ),
-      body: CupertinoSegmentedControl<String>(
-        children: {
-          'Reading': Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
-            child: const Text('Reading'),
-          ),
-          'Read': Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
-            child: const Text('Read'),
-          ),
-        },
-        groupValue: selectedOption,
-        onValueChanged: (value) {
-          setState(() {
-            selectedOption = value;
-            // Add logic here to filter books based on the selectedOption
-          });
-        },
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Library'),
+          bottom: TabBar(
+              tabs: const [
+                Tab(text: 'Reading'),
+                Tab(text: 'Read'),
+              ],
+              onTap: (index) {
+                setState(() {
+                  selectedOption = index == 0 ? BookStatus.reading : BookStatus.read;
+                  _loadData();
+                });
+              }),
+        ),
+        body: TabBarView(
+          children: [
+            // Reading Tab View
+            ListView.builder(
+              itemCount: books.length,
+              itemBuilder: (context, index) {
+                if (books[index].status == BookStatus.reading) {
+                  return BookTile(book: books[index]);
+                } else {
+                  return const SizedBox.shrink(); // Hide non-matching books
+                }
+              },
+            ),
+            // Read Tab View
+            ListView.builder(
+              itemCount: books.length,
+              itemBuilder: (context, index) {
+                if (books[index].status == BookStatus.read) {
+                  return BookTile(book: books[index]);
+                } else {
+                  return const SizedBox.shrink(); // Hide non-matching books
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
