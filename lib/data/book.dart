@@ -2,9 +2,15 @@ import 'package:hive/hive.dart';
 
 part 'book.g.dart';
 
+@HiveType(typeId: 1)
 enum BookStatus {
+  @HiveField(0)
   wantToRead,
+
+  @HiveField(1)
   reading,
+
+  @HiveField(2)
   read,
 }
 

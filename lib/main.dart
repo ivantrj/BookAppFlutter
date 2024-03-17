@@ -8,6 +8,7 @@ void main() async {
   // init hive
   await Hive.initFlutter();
   Hive.registerAdapter(BookAdapter()); // Register the adapter
+  Hive.registerAdapter(BookStatusAdapter()); // Register the adapter for BookStatus
   var box = await Hive.openBox('books');
 
   runApp(const MainApp());

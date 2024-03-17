@@ -17,7 +17,7 @@ class BookTile extends StatelessWidget {
           context: context,
           builder: (context) {
             return AlertDialog(
-              title: Text('Change Status'),
+              title: const Text('Change Status'),
               content: DropdownButton<BookStatus>(
                 value: book.status,
                 onChanged: (newStatus) {

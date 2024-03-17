@@ -45,3 +45,47 @@ class BookAdapter extends TypeAdapter<Book> {
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
+
+class BookStatusAdapter extends TypeAdapter<BookStatus> {
+  @override
+  final int typeId = 1;
+
+  @override
+  BookStatus read(BinaryReader reader) {
+    switch (reader.readByte()) {
+      case 0:
+        return BookStatus.wantToRead;
+      case 1:
+        return BookStatus.reading;
+      case 2:
+        return BookStatus.read;
+      default:
+        return BookStatus.wantToRead;
+    }
+  }
+
+  @override
+  void write(BinaryWriter writer, BookStatus obj) {
+    switch (obj) {
+      case BookStatus.wantToRead:
+        writer.writeByte(0);
+        break;
+      case BookStatus.reading:
+        writer.writeByte(1);
+        break;
+      case BookStatus.read:
+        writer.writeByte(2);
+        break;
+    }
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BookStatusAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}

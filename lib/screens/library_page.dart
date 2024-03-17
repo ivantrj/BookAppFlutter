@@ -20,12 +20,12 @@ class _LibraryPageState extends State<LibraryPage> {
       body: CupertinoSegmentedControl<String>(
         children: {
           'Reading': Container(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 18),
-            child: Text('Reading'),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+            child: const Text('Reading'),
           ),
           'Read': Container(
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 18),
-            child: Text('Read'),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 18),
+            child: const Text('Read'),
           ),
         },
         groupValue: selectedOption,
