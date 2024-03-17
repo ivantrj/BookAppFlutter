@@ -38,14 +38,14 @@ class _InboxPageState extends State<InboxPage> {
   void addNewBook() {
     showMaterialModalBottomSheet(
       context: context,
-      backgroundColor: Colors.white, // Set the background color
-      shape: RoundedRectangleBorder(
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)), // Rounded corners at the top
       ),
       builder: (context) => Padding(
-        padding: const EdgeInsets.all(20), // Overall padding for the modal content
+        padding: EdgeInsets.fromLTRB(20, 20, 20, MediaQuery.of(context).viewInsets.bottom + 20),
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Adjust size to content
+          mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: _controller,
