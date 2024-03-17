@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tabs_starter/data/book.dart';
 import 'package:flutter_tabs_starter/data/book_database.dart';
 import 'package:flutter_tabs_starter/screens/widgets/book_tile.dart';
-import 'package:flutter_tabs_starter/screens/widgets/dialog_box.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class InboxPage extends StatefulWidget {
   const InboxPage({super.key});
@@ -36,15 +36,57 @@ class _InboxPageState extends State<InboxPage> {
   }
 
   void addNewBook() {
-    showDialog(
+    showMaterialModalBottomSheet(
       context: context,
-      builder: ((context) {
-        return DialogBox(
-          controller: _controller,
-          onSave: saveNewBook,
-          onCancel: () => Navigator.of(context).pop(),
-        );
-      }),
+      backgroundColor: Colors.white, // Set the background color
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)), // Rounded corners at the top
+      ),
+      builder: (context) => Padding(
+        padding: const EdgeInsets.all(20), // Overall padding for the modal content
+        child: Column(
+          mainAxisSize: MainAxisSize.min, // Adjust size to content
+          children: [
+            TextField(
+              controller: _controller,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "Enter book name",
+                fillColor: Color(0xFFF0F0F0),
+                filled: true,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  // Use Expanded for better button alignment and spacing
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey,
+                    ),
+                    child: const Text("Cancel"),
+                  ),
+                ),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: saveNewBook,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                    ),
+                    child: const Text("Add"),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 
