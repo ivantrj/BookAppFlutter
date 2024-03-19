@@ -17,9 +17,6 @@ class _LibraryPageState extends State<LibraryPage> {
   BookStatus selectedOption = BookStatus.reading;
   List<Book> books = [];
 
-  // _LibraryPageState() {
-  //   db = DatabaseHelper.instance;
-  // }
   @override
   void initState() {
     super.initState();
@@ -69,7 +66,11 @@ class _LibraryPageState extends State<LibraryPage> {
             ListView.builder(
               itemCount: books.length,
               itemBuilder: (context, index) {
-                return BookTile(book: filteredBooks[index]);
+                return BookTile(
+                  book: filteredBooks[index],
+                  deleteFunction: (context) => deleteBook(filteredBooks[index]),
+                  changeBookStatus: (newStatus) => changeBookStatus(filteredBooks[index], newStatus),
+                );
               },
             ),
           ],
