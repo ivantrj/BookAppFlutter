@@ -10,17 +10,51 @@ class SettingsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: ListView(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('App', style: Theme.of(context).textTheme.titleMedium),
+          ),
+          const Divider(),
           SettingsTile(
-            icon: Icons.security_outlined,
+            icon: Icons.palette,
+            label: 'Theme',
+            onTap: () {},
+          ),
+          SettingsTile(
+            icon: Icons.import_export,
+            label: 'Import/Export Data',
+            onTap: () {},
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text('General', style: Theme.of(context).textTheme.titleMedium),
+          ),
+          const Divider(),
+          SettingsTile(
+            icon: Icons.language,
+            label: 'Website',
+            onTap: () {},
+          ),
+          SettingsTile(
+            icon: Icons.follow_the_signs,
+            label: 'Follow on Twitter',
+            onTap: () {},
+          ),
+          SettingsTile(
+            icon: Icons.lock_outline,
             label: 'Privacy Policy',
             onTap: () {},
           ),
           SettingsTile(
-            icon: Icons.fact_check_outlined,
+            icon: Icons.description_outlined,
             label: 'Terms of Service',
+            onTap: () {},
+          ),
+          SettingsTile(
+            icon: Icons.star,
+            label: 'Rate the app',
             onTap: () {},
           ),
         ],
