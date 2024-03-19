@@ -4,56 +4,54 @@ import 'package:flutter_tabs_starter/data/book.dart';
 class BookDatabase {
   final dbHelper = DatabaseHelper.instance;
 
-  Future<void> createInitialData() async {
+  // Data Management Methods
+  Future<int> insertBook(Book book) async {
     final db = await dbHelper.database;
-    await db.insert('books', Book(name: "Harry Potter", status: BookStatus.wantToRead).toMap());
+    return await db.insert('books', book.copyWith(author: book.author ?? 'Unknown').toMap());
   }
 
-  Future<List<Book>> loadBooks() async {
+  Future<List<Book>> getBooks() async {
     final db = await dbHelper.database;
-    final List<Map<String, dynamic>> maps = await db.query('books');
-
-    return List.generate(maps.length, (i) {
-      return Book.fromMap(maps[i]);
-    });
+    final maps = await db.query('books');
+    return List.generate(maps.length, (index) => Book.fromMap(maps[index]));
   }
 
-  Future<void> updateDatabase(List<Book> books) async {
+  Future<List<Book>> getBooksByStatus(BookStatus status) async {
     final db = await dbHelper.database;
-    for (var book in books) {
-      await db.update('books', book.toMap(), where: 'id = ?', whereArgs: [book.id]);
-    }
+    final maps = await db.query(
+      'books',
+      where: 'status = ?',
+      whereArgs: [status.index],
+    );
+    return List.generate(maps.length, (index) => Book.fromMap(maps[index]));
   }
 
-  // Method to insert a new book
-  Future<void> createBook(Book book) async {
+  Future<int> updateBook(Book book) async {
     final db = await dbHelper.database;
-    await db.insert('books', {
-      'name': book.name,
-      'author': book.author ?? '', // Ensure author is provided or set to an empty string
-      'status': book.status.toString(), // Store BookStatus as a string
-    });
+    return await db.update(
+      'books',
+      book.toMap(),
+      where: 'id = ?',
+      whereArgs: [book.id],
+    );
   }
 
-  // Method to delete a book by ID
-  Future<void> deleteBook(int? id) async {
+  Future<int> updateBookStatus(int bookId, BookStatus newStatus) async {
     final db = await dbHelper.database;
-    await db.delete('books', where: 'id = ?', whereArgs: [id]);
+    return await db.update(
+      'books',
+      {'status': newStatus.index},
+      where: 'id = ?',
+      whereArgs: [bookId],
+    );
   }
 
-// Method to load books by status
-  Future<List<Book>> loadBooksByStatus(String status) async {
+  Future<int> deleteBook(int id) async {
     final db = await dbHelper.database;
-    final List<Map<String, dynamic>> maps = await db.query('books', where: 'status = ?', whereArgs: [status]);
-
-    return List.generate(maps.length, (i) {
-      return Book.fromMap(maps[i]);
-    });
-  }
-
-  // Method to update a book's status
-  Future<void> updateBookStatus(int? id, BookStatus newStatus) async {
-    final db = await dbHelper.database;
-    await db.update('books', {'status': newStatus.toString()}, where: 'id = ?', whereArgs: [id]);
+    return await db.delete(
+      'books',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 }

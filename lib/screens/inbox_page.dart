@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabs_starter/data/book.dart';
 import 'package:flutter_tabs_starter/data/book_database.dart';
+import 'package:flutter_tabs_starter/data/database_helper.dart';
 import 'package:flutter_tabs_starter/screens/widgets/book_tile.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -13,6 +14,7 @@ class InboxPage extends StatefulWidget {
 
 class _InboxPageState extends State<InboxPage> {
   final BookDatabase db = BookDatabase();
+
   List<Book> books = [];
 
   @override
@@ -22,14 +24,14 @@ class _InboxPageState extends State<InboxPage> {
   }
 
   Future<void> _loadData() async {
-    books = await db.loadBooks();
+    books = await db.getBooks();
     setState(() {});
   }
 
   final _controller = TextEditingController();
 
   void saveNewBook() async {
-    await db.createBook(Book(name: _controller.text, status: BookStatus.wantToRead));
+    await db.insertBook(Book(name: _controller.text, status: BookStatus.wantToRead));
     _controller.clear();
     Navigator.of(context).pop();
     _loadData();
@@ -90,16 +92,14 @@ class _InboxPageState extends State<InboxPage> {
     );
   }
 
-  void deleteBook(int index) async {
-    await db.deleteBook(books[index].id);
+  void deleteBook(Book book) async {
+    await db.deleteBook(book.id!);
     _loadData(); // Reload data
   }
 
   void changeBookStatus(Book book, BookStatus newStatus) async {
-    await db.updateBookStatus(book.id, newStatus);
-    setState(() {
-      book.status = newStatus; // Update the book status locally
-    });
+    await db.updateBookStatus(book.id!, newStatus); // Assuming book.id is non-null
+    _loadData();
   }
 
   @override
@@ -120,7 +120,7 @@ class _InboxPageState extends State<InboxPage> {
         itemBuilder: (context, index) {
           return BookTile(
             book: filteredBooks[index],
-            deleteFunction: (BuildContext) => deleteBook(index),
+            deleteFunction: (context) => deleteBook(filteredBooks[index]),
             changeBookStatus: (newStatus) => changeBookStatus(filteredBooks[index], newStatus),
           );
         },
