@@ -1,3 +1,4 @@
+import 'package:flutter_tabs_starter/data/book.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -23,14 +24,14 @@ class DatabaseHelper {
   Future _createDB(Database db, int version) async {
     const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
     const textType = 'TEXT NOT NULL';
-    const boolType = 'BOOLEAN NOT NULL';
+    const integerType = 'INTEGER NOT NULL'; // For statusIndex
 
     await db.execute('''
 CREATE TABLE books (
   id $idType,
   name $textType,
   author $textType,
-  status $textType
+  status $integerType
 )
 ''');
   }

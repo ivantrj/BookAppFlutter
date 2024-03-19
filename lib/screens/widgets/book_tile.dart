@@ -50,17 +50,9 @@ class BookTile extends StatelessWidget {
               ),
             ],
           ),
-          child: Card(
-            elevation: 3,
-            margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Row(
-                children: [
-                  Text(book.name),
-                ],
-              ),
-            ),
+          child: ListTile(
+            title: Text(book.name),
+            subtitle: Text(BookStatus.values[book.status.index].toString()), // Display status
           ),
         ),
       ),
