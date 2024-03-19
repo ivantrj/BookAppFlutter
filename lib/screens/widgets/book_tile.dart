@@ -21,8 +21,10 @@ class BookTile extends StatelessWidget {
               content: DropdownButton<BookStatus>(
                 value: book.status,
                 onChanged: (newStatus) {
-                  Navigator.of(context).pop();
-                  changeBookStatus!(newStatus!);
+                  if (newStatus != null && newStatus != book.status) {
+                    Navigator.of(context).pop();
+                    changeBookStatus!(newStatus);
+                  }
                 },
                 items: BookStatus.values.map((status) {
                   return DropdownMenuItem<BookStatus>(
@@ -50,9 +52,28 @@ class BookTile extends StatelessWidget {
               ),
             ],
           ),
-          child: ListTile(
-            title: Text(book.name),
-            subtitle: Text(BookStatus.values[book.status.index].toString()), // Display status
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.3),
+                  offset: const Offset(2, 4),
+                  blurRadius: 5,
+                )
+              ],
+            ),
+            child: ListTile(
+              title: Text(
+                book.name,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
+              subtitle: Text(
+                BookStatus.values[book.status.index].toString(),
+                style: TextStyle(color: Colors.grey[600]),
+              ),
+            ),
           ),
         ),
       ),
