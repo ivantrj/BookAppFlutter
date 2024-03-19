@@ -1,8 +1,4 @@
-enum BookStatus {
-  wantToRead,
-  reading,
-  read,
-}
+enum BookStatus { wantToRead, reading, read }
 
 class Book {
   final int? id;
@@ -17,7 +13,7 @@ class Book {
       'id': id,
       'name': name,
       'author': author,
-      'status': status,
+      'status': status.toString().split('.').last, // Store status as a string
     };
   }
 
@@ -27,11 +23,24 @@ class Book {
       name: map['name'],
       author: map['author'],
       status: map['status'] != null
-          ? BookStatus.values.firstWhere(
-              (e) => e.toString() == 'BookStatus.' + map['status'],
-              orElse: () => BookStatus.wantToRead, // Provide a default value
-            )
+          ? (int.tryParse(map['status']) != null
+              ? BookStatus.values[int.parse(map['status'])]
+              : BookStatus.values.byName(map['status'])) // Handles numeric and string values
           : BookStatus.wantToRead,
+    );
+  }
+
+  Book copyWith({
+    int? id,
+    String? name,
+    String? author,
+    BookStatus? status,
+  }) {
+    return Book(
+      id: id ?? this.id, // Use the new value if provided, otherwise keep the existing 'id'
+      name: name ?? this.name,
+      author: author ?? this.author,
+      status: status ?? this.status,
     );
   }
 }

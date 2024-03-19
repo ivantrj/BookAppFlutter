@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabs_starter/navigation/router.dart';
 import 'package:flutter_tabs_starter/style/style.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 void main() async {
   // init hive
@@ -16,13 +17,16 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Flutter App',
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.system,
-      debugShowCheckedModeBanner: false,
+    return ShadApp.cupertinoRouter(
       routerConfig: router,
     );
+    // return MaterialApp.router(
+    //   title: 'Flutter App',
+    //   theme: lightTheme,
+    //   darkTheme: darkTheme,
+    //   themeMode: ThemeMode.system,
+    //   debugShowCheckedModeBanner: false,
+    //   routerConfig: router,
+    // );
   }
 }
