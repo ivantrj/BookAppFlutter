@@ -22,7 +22,7 @@ class BookTile extends StatelessWidget {
               child: Column(
                 children: [
                   const Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: EdgeInsets.all(8.0),
                     child: Text(
                       'Change Status',
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -31,6 +31,12 @@ class BookTile extends StatelessWidget {
                   Expanded(
                     child: CupertinoPicker(
                       itemExtent: 50,
+                      magnification: 1.22,
+                      squeeze: 1.2,
+                      useMagnifier: true,
+                      scrollController: FixedExtentScrollController(
+                        initialItem: 1,
+                      ),
                       onSelectedItemChanged: (int index) {
                         changeBookStatus!(BookStatus.values[index]);
                         // Navigator.pop(context);
@@ -38,8 +44,8 @@ class BookTile extends StatelessWidget {
                       children: BookStatus.values.map((status) {
                         return Center(
                           child: Text(
-                            status.toString(),
-                            style: TextStyle(fontSize: 18),
+                            status.statusText,
+                            style: const TextStyle(fontSize: 18),
                           ),
                         );
                       }).toList(),
@@ -84,7 +90,7 @@ class BookTile extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               subtitle: Text(
-                BookStatus.values[book.status.index].toString(),
+                BookStatus.values[book.status.index].statusText,
                 style: TextStyle(color: Colors.grey[600]),
               ),
             ),

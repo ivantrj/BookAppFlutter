@@ -1,5 +1,3 @@
-enum BookStatus { wantToRead, reading, read }
-
 class Book {
   final int? id;
   final String name;
@@ -42,5 +40,20 @@ class Book {
       author: author ?? this.author,
       status: status ?? this.status,
     );
+  }
+}
+
+enum BookStatus { wantToRead, reading, read }
+
+extension BookStatusExtension on BookStatus {
+  String get statusText {
+    switch (this) {
+      case BookStatus.wantToRead:
+        return 'Want to Read';
+      case BookStatus.reading:
+        return 'Reading';
+      case BookStatus.read:
+        return 'Read';
+    }
   }
 }
