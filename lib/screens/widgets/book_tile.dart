@@ -4,10 +4,10 @@ import 'package:flutter_tabs_starter/data/book.dart';
 
 class BookTile extends StatelessWidget {
   final Book book;
-  Function(BuildContext)? deleteFunction;
-  Function(BookStatus)? changeBookStatus;
+  final Function(BuildContext)? deleteFunction;
+  final Function(BookStatus)? changeBookStatus;
 
-  BookTile({super.key, this.deleteFunction, required this.book, this.changeBookStatus});
+  const BookTile({super.key, this.deleteFunction, required this.book, this.changeBookStatus});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,7 @@ class BookTile extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.all(25.0),
+        padding: const EdgeInsets.all(10.0),
         child: Slidable(
           endActionPane: ActionPane(
             motion: const StretchMotion(),

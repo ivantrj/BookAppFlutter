@@ -63,7 +63,6 @@ class _InboxPageState extends State<InboxPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  // Use Expanded for better button alignment and spacing
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop();

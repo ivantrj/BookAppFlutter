@@ -40,7 +40,6 @@ class _LibraryPageState extends State<LibraryPage> {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: CupertinoSlidingSegmentedControl<BookStatus>(
-          // thumbColor: BookStatus[sele]!,
           groupValue: selectedOption,
           onValueChanged: (BookStatus? value) {
             if (value != null) {
@@ -51,27 +50,27 @@ class _LibraryPageState extends State<LibraryPage> {
             }
           },
           children: const <BookStatus, Widget>{
-            BookStatus.read: Padding(
+            BookStatus.reading: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Icon(Icons.menu_book, color: Colors.purple),
                   Text(
-                    'Read',
+                    'Reading',
                     style: TextStyle(fontSize: 20),
                   ),
                 ],
               ),
             ),
-            BookStatus.reading: Padding(
+            BookStatus.read: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Icon(Icons.bookmark_added_sharp, color: Colors.purple),
                   Text(
-                    'Reading',
+                    'Read',
                     style: TextStyle(fontSize: 20),
                   ),
                 ],
