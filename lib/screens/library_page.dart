@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tabs_starter/data/book.dart';
 import 'package:flutter_tabs_starter/data/book_database.dart';
-import 'package:flutter_tabs_starter/data/database_helper.dart';
 import 'package:flutter_tabs_starter/screens/widgets/book_tile.dart';
 
 class LibraryPage extends StatefulWidget {

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_tabs_starter/data/book.dart';
@@ -13,25 +14,38 @@ class BookTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        showDialog(
+        showModalBottomSheet(
           context: context,
           builder: (context) {
-            return AlertDialog(
-              title: const Text('Change Status'),
-              content: DropdownButton<BookStatus>(
-                value: book.status,
-                onChanged: (newStatus) {
-                  if (newStatus != null && newStatus != book.status) {
-                    Navigator.of(context).pop();
-                    changeBookStatus!(newStatus);
-                  }
-                },
-                items: BookStatus.values.map((status) {
-                  return DropdownMenuItem<BookStatus>(
-                    value: status,
-                    child: Text(status.toString()),
-                  );
-                }).toList(),
+            return SizedBox(
+              height: 200,
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Change Status',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Expanded(
+                    child: CupertinoPicker(
+                      itemExtent: 50,
+                      onSelectedItemChanged: (int index) {
+                        changeBookStatus!(BookStatus.values[index]);
+                        // Navigator.pop(context);
+                      },
+                      children: BookStatus.values.map((status) {
+                        return Center(
+                          child: Text(
+                            status.toString(),
+                            style: TextStyle(fontSize: 18),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
               ),
             );
           },
