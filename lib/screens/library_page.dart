@@ -68,8 +68,8 @@ class _LibraryPageState extends State<LibraryPage> {
               itemBuilder: (context, index) {
                 return BookTile(
                   book: filteredBooks[index],
-                  deleteFunction: (context) => deleteBook(filteredBooks[index]),
-                  changeBookStatus: (newStatus) => changeBookStatus(filteredBooks[index], newStatus),
+                  // deleteFunction: (context) => deleteBook(filteredBooks[index]),
+                  // changeBookStatus: (newStatus) => changeBookStatus(filteredBooks[index], newStatus),
                 );
               },
             ),
